@@ -1,8 +1,7 @@
 import React from 'react';
-import { ImageBackground, SafeAreaView, ScrollView, View, Image, Text } from 'react-native';
+import { ImageBackground, SafeAreaView, ScrollView, View, Image, Text, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { backgrounds, images } from '../constants';
-import { tailwind } from 'react-native-tailwindcss';
 import { useNavigation } from '@react-navigation/native';
 
 import CustomButton from '../components/CustomButton';
@@ -11,49 +10,71 @@ export default function Welcome() {
   const navigation = useNavigation();
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.flexOne}>
       <ImageBackground
         source={backgrounds.home}
-        style={{ flex: 1 }}
+        style={styles.flexOne}
         resizeMode="cover"
       >
-        <SafeAreaView style={{ flex: 1 }}>
-          
-          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-           
-            <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 16, marginTop: 10 }}>
+        <SafeAreaView style={styles.flexOne}>
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.logoContainer}>
               <Image 
                 source={images.logo}
-                style={{ width: 130, height: 84 }}
+                style={styles.logo}
                 resizeMode='contain'
               />
             </View>
 
-           
-            <View style={{ flex: 1 }} />
+            <View style={styles.flexOne} />
 
-           
-            <View style={{ width: '100%', alignItems: 'center', paddingHorizontal: 16, paddingBottom: 32 }}>
-              
-              <Text style={{ fontSize: 24, color: 'white', fontWeight: 'bold', textAlign: 'center', marginBottom: 16 }}>
+            <View style={styles.bottomContainer}>
+              <Text style={styles.title}>
                 The Ultimate Fitness Experience
               </Text>
 
-              
               <CustomButton
                 title={'Sign In'}
                 handlePress={() => navigation.navigate('SignIn')}
-                containerStyles={[tailwind.wFull, tailwind.py4, tailwind.roundedFull, tailwind.mt4, { backgroundColor: '#F05219' }]}
-                textStyles={{ color: 'white', fontWeight: '600' }}
               />
-
+              
             </View>
-
           </ScrollView>
-
         </SafeAreaView>
-
       </ImageBackground>
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  flexOne: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  logoContainer: {
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    marginTop: 10,
+  },
+  logo: {
+    width: 130,
+    height: 84,
+  },
+  bottomContainer: {
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+  },
+  title: {
+    fontSize: 24,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  
+});

@@ -18,7 +18,7 @@ const CustomButton = ({ title, handlePress, containerStyles, textStyles, isLoadi
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'white',
+    backgroundColor: '#F05219',
     borderRadius: 50,
     minHeight: 66,
     minWidth: 300,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: 'primary',
+    color: 'white',
     fontWeight: '600',
     fontSize: 18,
   },
