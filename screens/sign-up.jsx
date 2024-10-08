@@ -1,7 +1,6 @@
 import { View, Text, ScrollView, Image, StyleSheet, TextInput, StatusBar } from 'react-native';
 import React, { useState } from 'react';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,38 +8,41 @@ import { images } from '../constants';
 import { icons } from '../constants';
 import CustomButton from '../components/CustomButton';
 
-const SignIn = () => {
+const SignUp = () => {
   const navigation = useNavigation();
 
   const [form, setForm] = useState({
+    name: '',
     email: '',
-    password: ''
+    password: '',
+    weight: '',
+    height: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false); // Estado para manejar la visibilidad de la contraseña
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const submit = async (email, password) => {
+  const submit = async (name, email, password, weight, height) => {
     setIsSubmitting(true);
     try {
       const response = await axios.post('http://192.168.18.8:8000/auth/register', {
+        name,
         email,
         password,
+        weight,
+        height,
       });
 
       if (response.status === 200) {
-        const { token } = response.data;
-
-        // Guardar el JWT en AsyncStorage
-        await AsyncStorage.setItem('jwtToken', token);
-        console.log('JWT saved:', token);
+        console.log('Registration successful:', response.data);
+        navigation.navigate('SignIn');
       } else {
-        console.log('Authentication error:', response.data.message);
+        console.log('Registration error:', response.data.message);
       }
     } catch (error) {
-      console.error('Authentication error:', error.response ? error.response.data : error.message);
+      console.error('Registration error:', error.response ? error.response.data : error.message);
     } finally {
-      setIsSubmitting(false); // Volver el botón a su estado original
+      setIsSubmitting(false);
     }
   };
 
@@ -50,8 +52,16 @@ const SignIn = () => {
 
       <View style={styles.header}>
         <Image style={styles.logo} source={images.logo} />
-        <Text style={styles.title}> Welcome Back!</Text>
+        <Text style={styles.title}>  Create your account!</Text>
       </View>
+
+      <TextInput
+        style={styles.input}
+        placeholder="name"
+        placeholderTextColor="#8e8e93"
+        value={form.name}
+        onChangeText={(text) => setForm({ ...form, name: text })}
+      />
 
       <TextInput
         style={styles.input}
@@ -69,7 +79,7 @@ const SignIn = () => {
           placeholderTextColor="#8e8e93"
           value={form.password}
           onChangeText={(text) => setForm({ ...form, password: text })}
-          secureTextEntry={!passwordVisible} // Mostrar/ocultar contraseña
+          secureTextEntry={!passwordVisible} 
         />
 
         <TouchableOpacity
@@ -77,41 +87,57 @@ const SignIn = () => {
           style={styles.eyeIconContainer}
         >
           <Image
-            source={passwordVisible ? icons.eyehide : icons.eye} // Cambiar ícono según la visibilidad
+            source={passwordVisible ? icons.eyehide : icons.eye}
             style={styles.eyeIcon}
           />
         </TouchableOpacity>
       </View>
 
+      <TextInput
+        style={styles.input}
+        placeholder="weight"
+        placeholderTextColor="#8e8e93"
+        value={form.weight}
+        onChangeText={(text) => setForm({ ...form, weight: text })}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="height"
+        placeholderTextColor="#8e8e93"
+        value={form.height}
+        onChangeText={(text) => setForm({ ...form, height: text })}
+      />
+
       <CustomButton
         style={styles.button}
-        title={'Sign In'}
-        handlePress={() => submit(form.email, form.password)}
+        title={'Sign Up'}
+        handlePress={() => submit(form.name, form.email, form.password, form.weight, form.height)}
         isLoading={isSubmitting}
       />
 
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-        <Text style={styles.signUpText}>Don't have an account? Sign Up</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+        <Text style={styles.signUpText}>Already have an account? Sign In</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default SignIn;
+export default SignUp;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#271F30', // Purple
+    backgroundColor: '#271F30',
     paddingHorizontal: 20,
   },
   header: {
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 60,
-    marginTop: -270,
+    marginTop: -50,
   },
   logo: {
     width: 115,
@@ -120,26 +146,26 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    color: '#FFFFFF', // White 
+    color: '#FFFFFF',
     marginBottom: 20,
     fontWeight: 'bold',
   },
   input: {
     width: '100%',
     height: 50,
-    borderColor: '#80F85', // Gray
+    borderColor: '#80F85',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 15,
     fontSize: 16,
-    color: '#8e8e93', // Gray for text
+    color: '#8e8e93',
     marginBottom: 20,
   },
   passwordContainer: {
     width: '100%',
     height: 50,
     flexDirection: 'row',
-    borderColor: '#80F85', // Gray
+    borderColor: '#80F85',
     borderWidth: 0.5,
     borderRadius: 8,
     alignItems: 'center',
@@ -164,7 +190,7 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     height: 50,
-    backgroundColor: '#F05219', // Primary color
+    backgroundColor: '#F05219',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
@@ -172,7 +198,7 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     marginTop: 20,
-    color: '#FFFFFF', // Secondary taupe color
+    color: '#F05219',
     fontSize: 16,
   },
 });

@@ -18,7 +18,7 @@ const SignIn = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false); // Estado para manejar la visibilidad de la contraseña
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const submit = async (email, password) => {
     setIsSubmitting(true);
@@ -31,7 +31,6 @@ const SignIn = () => {
       if (response.status === 200) {
         const { token } = response.data;
 
-        // Guardar el JWT en AsyncStorage
         await AsyncStorage.setItem('jwtToken', token);
         console.log('JWT saved:', token);
       } else {
@@ -40,7 +39,7 @@ const SignIn = () => {
     } catch (error) {
       console.error('Authentication error:', error.response ? error.response.data : error.message);
     } finally {
-      setIsSubmitting(false); // Volver el botón a su estado original
+      setIsSubmitting(false);
     }
   };
 
@@ -69,7 +68,7 @@ const SignIn = () => {
           placeholderTextColor="#8e8e93"
           value={form.password}
           onChangeText={(text) => setForm({ ...form, password: text })}
-          secureTextEntry={!passwordVisible} // Mostrar/ocultar contraseña
+          secureTextEntry={!passwordVisible}
         />
 
         <TouchableOpacity
@@ -77,7 +76,7 @@ const SignIn = () => {
           style={styles.eyeIconContainer}
         >
           <Image
-            source={passwordVisible ? icons.eyehide : icons.eye} // Cambiar ícono según la visibilidad
+            source={passwordVisible ? icons.eyehide : icons.eye}
             style={styles.eyeIcon}
           />
         </TouchableOpacity>
@@ -104,7 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#271F30', // Purple
+    backgroundColor: '#271F30',
     paddingHorizontal: 20,
   },
   header: {
@@ -120,26 +119,26 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    color: '#FFFFFF', // White 
+    color: '#FFFFFF',
     marginBottom: 20,
     fontWeight: 'bold',
   },
   input: {
     width: '100%',
     height: 50,
-    borderColor: '#80F85', // Gray
+    borderColor: '#80F85',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 15,
     fontSize: 16,
-    color: '#8e8e93', // Gray for text
+    color: '#8e8e93',
     marginBottom: 20,
   },
   passwordContainer: {
     width: '100%',
     height: 50,
     flexDirection: 'row',
-    borderColor: '#80F85', // Gray
+    borderColor: '#80F85',
     borderWidth: 0.5,
     borderRadius: 8,
     alignItems: 'center',
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     height: 50,
-    backgroundColor: '#F05219', // Primary color
+    backgroundColor: '#F05219',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     marginTop: 20,
-    color: '#FFFFFF', // Secondary taupe color
+    color: '#F05219',
     fontSize: 16,
   },
 });
