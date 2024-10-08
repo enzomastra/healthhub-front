@@ -1,9 +1,10 @@
-import { View, Text, ScrollView, Image, StyleSheet, TextInput, StatusBar } from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput, StatusBar, Alert } from 'react-native';
 import React, { useState } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../hooks/AuthContext';
 
 import { images } from '../constants';
 import { icons } from '../constants';
@@ -19,6 +20,7 @@ const SignIn = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const { login } = useAuth(); // Trae la función login del contexto
 
   const submit = async (email, password) => {
     setIsSubmitting(true);
@@ -31,8 +33,21 @@ const SignIn = () => {
       if (response.status === 200) {
         const { token } = response.data;
 
+        // Guarda el token y autentica
         await AsyncStorage.setItem('jwtToken', token);
-        console.log('JWT saved:', token);
+        await login(token); // Llama a la función login del contexto
+
+        Alert.alert(
+          'Login Successful',
+          'Welcome back!',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.navigate('Home'),
+            },
+          ],
+          { cancelable: false }
+        );
       } else {
         console.log('Authentication error:', response.data.message);
       }
