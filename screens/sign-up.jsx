@@ -1,8 +1,9 @@
-import { View, Text, ScrollView, Image, StyleSheet, TextInput, StatusBar } from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput, StatusBar } from 'react-native';
 import React, { useState } from 'react';
-import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+
+import { handleSignUp } from '../api';
 
 import { images } from '../constants';
 import { icons } from '../constants';
@@ -22,28 +23,8 @@ const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const submit = async (name, email, password, weight, height) => {
-    setIsSubmitting(true);
-    try {
-      const response = await axios.post('http://192.168.18.8:8000/auth/register', {
-        name,
-        email,
-        password,
-        weight,
-        height,
-      });
-
-      if (response.status === 200) {
-        console.log('Registration successful:', response.data);
-        navigation.navigate('SignIn');
-      } else {
-        console.log('Registration error:', response.data.message);
-      }
-    } catch (error) {
-      console.error('Registration error:', error.response ? error.response.data : error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const submit = () => {
+    handleSignUp(form, setIsSubmitting, navigation);
   };
 
   return (

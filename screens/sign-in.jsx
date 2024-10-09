@@ -1,67 +1,31 @@
-import { View, Text, Image, StyleSheet, TextInput, StatusBar, Alert } from 'react-native';
 import React, { useState } from 'react';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { handleLogin } from '../api';
 import { useAuth } from '../hooks/AuthContext';
-
 import { images } from '../constants';
 import { icons } from '../constants';
 import CustomButton from '../components/CustomButton';
 
 const SignIn = () => {
   const navigation = useNavigation();
-
+  const { login } = useAuth();
   const [form, setForm] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const { login } = useAuth(); // Trae la función login del contexto
 
-  const submit = async (email, password) => {
-    setIsSubmitting(true);
-    try {
-      const response = await axios.post('http://192.168.18.8:8000/auth/login', {
-        email,
-        password,
-      });
-
-      if (response.status === 200) {
-        const { token } = response.data;
-
-        // Guarda el token y autentica
-        await AsyncStorage.setItem('jwtToken', token);
-        await login(token); // Llama a la función login del contexto
-
-        Alert.alert(
-          'Login Successful',
-          'Welcome back!',
-          [
-            {
-              text: 'OK',
-              onPress: () => navigation.navigate('Home'),
-            },
-          ],
-          { cancelable: false }
-        );
-      } else {
-        console.log('Authentication error:', response.data.message);
-      }
-    } catch (error) {
-      console.error('Authentication error:', error.response ? error.response.data : error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const submit = () => {
+    handleLogin(form, setIsSubmitting, login, navigation);
   };
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-
+      
       <View style={styles.header}>
         <Image style={styles.logo} source={images.logo} />
         <Text style={styles.title}> Welcome Back!</Text>
@@ -111,8 +75,6 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -138,6 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontWeight: 'bold',
   },
+  
   input: {
     width: '100%',
     height: 50,
@@ -184,9 +147,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 20,
   },
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
   signUpText: {
+    color: '#FFFFFF',
     marginTop: 20,
-    color: '#F05219',
-    fontSize: 16,
   },
 });
+
+export default SignIn;
