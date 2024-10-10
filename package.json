@@ -13,6 +13,7 @@
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
+    "@shopify/flash-list": "^1.7.1",
     "@types/react": "~18.2.79",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
