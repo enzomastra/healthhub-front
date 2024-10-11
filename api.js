@@ -4,6 +4,7 @@ import { Alert } from "react-native";
 
 const API_URL_AUTH = "http://192.168.18.8:8000/auth";
 const API_URL_EXERCISES = "http://192.168.18.8:8000/exercise/search?query=";
+const API_URL_WORKOUT = "http://192.168.18.8:8000/workout";
 
 export const handleLogin = async (form, setIsSubmitting, login, navigation) => {
   setIsSubmitting(true);
@@ -89,6 +90,38 @@ export const fetchTrendingExercises = async () => {
     return filteredExercises;
   } catch (error) {
     console.error('Error fetching trending exercises:', error);
+    throw error;
+  }
+};
+
+export const fetchUserWorkouts = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await axios.get(`${API_URL_WORKOUT}/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log('Request Headers:', response.config.headers); // Verifica los encabezados de la solicitud
+    console.log('Response Data:', response.data); // Verifica los datos de la respuesta
+
+    if (!response.data || !Array.isArray(response.data)) {
+      throw new Error('Invalid response data');
+    }
+
+    // Filtrar rutinas que no tienen campos en null
+    const filteredWorkouts = response.data.filter(workout => 
+      workout && workout.name && workout.description && workout.exercises
+    );
+
+    return filteredWorkouts;
+  } catch (error) {
+    console.error('Error fetching user workouts:', error);
     throw error;
   }
 };

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { fetchTrendingExercises } from '../api';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { fetchTrendingExercises, fetchUserWorkouts } from '../api';
 import { FlashList } from '@shopify/flash-list';
 import ExerciseCard from '../components/ExerciseCard';
+import WorkoutCard from '../components/WorkoutCard'; // Importar el nuevo componente
 
 const Home = () => {
   const [trendingExercises, setTrendingExercises] = useState([]);
+  const [userWorkouts, setUserWorkouts] = useState([]); // Estado para las rutinas del usuario
 
   useEffect(() => {
     const loadTrendingExercises = async () => {
@@ -17,8 +19,21 @@ const Home = () => {
       }
     };
 
+    const loadUserWorkouts = async () => {
+      try {
+        const workouts = await fetchUserWorkouts();
+        setUserWorkouts(workouts);
+      } catch (error) {
+        console.error('Error loading user workouts:', error);
+      }
+    };
+
     loadTrendingExercises();
+    loadUserWorkouts();
   }, []);
+
+  // Añadir la tarjeta de "Crear nueva rutina" al final de la lista de rutinas del usuario
+  const workoutsWithCreateNew = [...userWorkouts, { isCreateNew: true }];
 
   return (
     <View style={styles.container}>
@@ -26,13 +41,31 @@ const Home = () => {
       <Text style={styles.sectionSubtitle}>Ejercicios en Tendencia</Text>
 
       <View style={styles.flashListContainer}>
-        <FlashList
-          data={trendingExercises}
-          renderItem={({ item }) => <ExerciseCard exercise={item} />}
-          estimatedItemSize={150} // Ajusta según el tamaño de tus tarjetas
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        />
+        <View style={{ height: 200, width: Dimensions.get("screen").width }}>
+          <FlashList
+            data={trendingExercises}
+            renderItem={({ item }) => <ExerciseCard exercise={item} />}
+            estimatedItemSize={150}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+      </View>
+
+      <Text style={styles.sectionSubtitle}>Mis Rutinas</Text>
+
+      <View style={styles.flashListContainer}>
+        <View style={{ height: 200, width: Dimensions.get("screen").width }}>
+          <FlashList
+            data={workoutsWithCreateNew}
+            renderItem={({ item }) => (
+              <WorkoutCard workout={item} isCreateNew={item.isCreateNew} />
+            )}
+            estimatedItemSize={150}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
       </View>
     </View>
   );
@@ -59,8 +92,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   flashListContainer: {
-    flex: 1,
-    marginTop: 10,
+    flexGrow: 0,
+    marginBottom: 20, // Añadir margen inferior para separar las listas
   },
 });
 
