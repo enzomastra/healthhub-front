@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/home';
 import Profile from '../screens/profile';
-import Routines from '../screens/routines';
+import Routines from '../screens/workout';
 import { Image } from 'react-native';
 import icons from '../constants/icons';
 

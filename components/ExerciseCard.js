@@ -23,7 +23,7 @@ const ExerciseCard = ({ exercise }) => {
 const styles = StyleSheet.create({
   card: {
     padding: 30,
-    height: 120,
+    height: 150,
     width: 200,
     backgroundColor: '#f1f1f1',
     borderRadius: 10,

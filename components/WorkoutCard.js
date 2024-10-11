@@ -7,7 +7,7 @@ const WorkoutCard = ({ workout, isCreateNew }) => {
 
   const handlePress = () => {
     if (isCreateNew) {
-      navigation.navigate('Routines');
+      navigation.navigate('Workout');
     } else {
       navigation.navigate('WorkoutDetails', { workout });
     }
@@ -16,7 +16,7 @@ const WorkoutCard = ({ workout, isCreateNew }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       {isCreateNew ? (
-        <Text style={styles.createNewText}>Crear nueva rutina</Text>
+        <Text style={styles.createNewText}>Create a new Workout</Text>
       ) : (
         <>
           <Text style={styles.name}>{workout.name}</Text>
@@ -30,14 +30,14 @@ const WorkoutCard = ({ workout, isCreateNew }) => {
 const styles = StyleSheet.create({
   card: {
     padding: 20,
-    height: 150, // Ajustar la altura de la tarjeta
+    height: 150,
     backgroundColor: '#f1f1f1',
     borderRadius: 10,
     marginBottom: 10,
     borderWidth: 3,
     borderColor: '#e1e1e1',
     marginHorizontal: 2,
-    width: 200, // Ajustar el ancho de la tarjeta
+    width: 200,
     justifyContent: 'center',
     alignItems: 'center',
   },

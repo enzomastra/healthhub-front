@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { fetchTrendingExercises, fetchUserWorkouts } from '../api';
 import { FlashList } from '@shopify/flash-list';
 import ExerciseCard from '../components/ExerciseCard';
-import WorkoutCard from '../components/WorkoutCard'; // Importar el nuevo componente
+import WorkoutCard from '../components/WorkoutCard';
 
 const Home = () => {
   const [trendingExercises, setTrendingExercises] = useState([]);
-  const [userWorkouts, setUserWorkouts] = useState([]); // Estado para las rutinas del usuario
+  const [userWorkouts, setUserWorkouts] = useState([]);
 
   useEffect(() => {
     const loadTrendingExercises = async () => {
@@ -32,16 +32,18 @@ const Home = () => {
     loadUserWorkouts();
   }, []);
 
-  // Añadir la tarjeta de "Crear nueva rutina" al final de la lista de rutinas del usuario
+
   const workoutsWithCreateNew = [...userWorkouts, { isCreateNew: true }];
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Bienvenido a FitApp</Text>
-      <Text style={styles.sectionSubtitle}>Ejercicios en Tendencia</Text>
+      <Text style={styles.sectionTitle}>Welcome to Healthhub</Text>
+      <Text style={styles.sectionSubtitle}>Trending Exercises</Text>
+
 
       <View style={styles.flashListContainer}>
         <View style={{ height: 200, width: Dimensions.get("screen").width }}>
+          {trendingExercises.length > 0 ? (
           <FlashList
             data={trendingExercises}
             renderItem={({ item }) => <ExerciseCard exercise={item} />}
@@ -49,10 +51,13 @@ const Home = () => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
           />
+        ) : (
+          <Text style={{ color: '#fff' }}>Loading exercises...</Text>
+        )}
         </View>
-      </View>
+      </View> 
 
-      <Text style={styles.sectionSubtitle}>Mis Rutinas</Text>
+      <Text style={styles.sectionSubtitle}>My Workouts</Text>
 
       <View style={styles.flashListContainer}>
         <View style={{ height: 200, width: Dimensions.get("screen").width }}>
@@ -90,10 +95,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     color: '#FFFFFF',
-  },
-  flashListContainer: {
-    flexGrow: 0,
-    marginBottom: 20, // Añadir margen inferior para separar las listas
   },
 });
 

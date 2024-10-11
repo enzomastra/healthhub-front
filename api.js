@@ -107,14 +107,13 @@ export const fetchUserWorkouts = async () => {
       },
     });
 
-    console.log('Request Headers:', response.config.headers); // Verifica los encabezados de la solicitud
-    console.log('Response Data:', response.data); // Verifica los datos de la respuesta
+    console.log('Request Headers:', response.config.headers);
+    console.log('Response Data:', response.data);
 
     if (!response.data || !Array.isArray(response.data)) {
       throw new Error('Invalid response data');
     }
 
-    // Filtrar rutinas que no tienen campos en null
     const filteredWorkouts = response.data.filter(workout => 
       workout && workout.name && workout.description && workout.exercises
     );
