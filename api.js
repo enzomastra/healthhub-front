@@ -65,18 +65,19 @@ export const handleSignUp = async (form, setIsSubmitting, navigation) => {
   }
 };
 
-export const fetchTrendingExercises = async () => {
+export const fetchExercises = async (query = '') => {
   try {
     const token = await AsyncStorage.getItem('token');
     if (!token) {
       throw new Error('No token found');
     }
 
-    const response = await axios.get(`${API_URL_EXERCISES}`, {
+    const response = await axios.get(`${API_URL_EXERCISES}${query}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log('url:', `${API_URL_EXERCISES}${query}`);
 
 
     if (!response.data || !Array.isArray(response.data)) {
@@ -89,7 +90,6 @@ export const fetchTrendingExercises = async () => {
 
     return filteredExercises;
   } catch (error) {
-    console.error('Error fetching trending exercises:', error);
     throw error;
   }
 };
@@ -121,6 +121,73 @@ export const fetchUserWorkouts = async () => {
     return filteredWorkouts;
   } catch (error) {
     console.error('Error fetching user workouts:', error);
+    throw error;
+  }
+};
+
+export const saveWorkout = async (workout) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await axios.post(`${API_URL_WORKOUT}/save`, workout, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error saving workout:', error);
+    throw error;
+  }
+};
+
+export const addExerciseToWorkout = async (workoutId, exerciseName) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await axios.post(`${API_URL_WORKOUT}/${workoutId}/add/${encodeURIComponent(exerciseName)}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error adding exercise to workout:', error);
+    throw error;
+  }
+}
+
+// Nueva función para obtener los detalles del ejercicio desde la API Ninja
+export const fetchExerciseDetails = async (exerciseName) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await axios.get(`${API_URL_EXERCISES}${exerciseName}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log('url:', `${API_URL_EXERCISES}${exerciseName}`);
+
+    if (!response.data || !Array.isArray(response.data)) {
+      throw new Error('Invalid response data');
+    }
+
+    const exerciseDetails = response.data[0]; // Asumiendo que el primer resultado es el que buscas
+    return exerciseDetails;
+  } catch (error) {
+    console.error('Error fetching exercise details:', error);
     throw error;
   }
 };

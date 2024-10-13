@@ -7,8 +7,8 @@ const ExerciseDetails = ({ route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{exercise.name}</Text>
-      <Text style={styles.muscle}>Músculo: {exercise.muscle}</Text>
-      <Text style={styles.instructions}>Instrucciones: {exercise.instructions}</Text>
+      <Text style={styles.muscle}>Muscle: {exercise.muscle}</Text>
+      <Text style={styles.instructions}>Instructions: {exercise.instructions}</Text>
     </View>
   );
 };

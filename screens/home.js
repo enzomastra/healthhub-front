@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { fetchTrendingExercises, fetchUserWorkouts } from '../api';
+import { fetchExercises, fetchUserWorkouts } from '../api';
 import { FlashList } from '@shopify/flash-list';
 import ExerciseCard from '../components/ExerciseCard';
 import WorkoutCard from '../components/WorkoutCard';
 
 const Home = () => {
-  const [trendingExercises, setTrendingExercises] = useState([]);
+  const [exercises, setExercises] = useState([]);
   const [userWorkouts, setUserWorkouts] = useState([]);
 
   useEffect(() => {
-    const loadTrendingExercises = async () => {
+    const loadExercises = async () => {
       try {
-        const exercises = await fetchTrendingExercises();
-        setTrendingExercises(exercises);
+        const result = await fetchExercises('');
+        setExercises(result);
       } catch (error) {
-        console.error('Error loading trending exercises:', error);
+        console.error('Error loading exercises:', error);
       }
     };
 
@@ -28,7 +28,7 @@ const Home = () => {
       }
     };
 
-    loadTrendingExercises();
+    loadExercises();
     loadUserWorkouts();
   }, []);
 
@@ -43,9 +43,9 @@ const Home = () => {
 
       <View style={styles.flashListContainer}>
         <View style={{ height: 200, width: Dimensions.get("screen").width }}>
-          {trendingExercises.length > 0 ? (
+          {exercises.length > 0 ? (
           <FlashList
-            data={trendingExercises}
+            data={exercises}
             renderItem={({ item }) => <ExerciseCard exercise={item} />}
             estimatedItemSize={150}
             horizontal={true}

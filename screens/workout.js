@@ -33,13 +33,13 @@ const Routines = () => {
 
   return (
     <View style={styles.container}>
-      <BackButton />
+      <BackButton/>
       <TouchableOpacity style={styles.createButton} onPress={handleCreateNewRoutine}>
         <Text style={styles.createButtonText}>+</Text>
       </TouchableOpacity>
 
       {userWorkouts.length === 0 ? (
-        <Text style={styles.noWorkoutsText}>No workouts, create a new one!</Text>
+        <Text style={styles.noWorkoutsText}>No workouts? Create a new one!</Text>
       ) : (
         <View style={styles.flashListContainer}>
           <View style={{ height: 200, width: Dimensions.get("screen").width }}>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   createButton: {
     position: 'absolute',
-    top: 25,
+    top: 45,
     right: 20,
     backgroundColor: '#F05219',
     width: 50,
