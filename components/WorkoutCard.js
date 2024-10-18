@@ -9,7 +9,7 @@ const WorkoutCard = ({ workout, isCreateNew }) => {
     if (isCreateNew) {
       navigation.navigate('Workout');
     } else {
-      navigation.navigate('WorkoutDetails', { workout });
+      navigation.navigate('WorkoutDetails', { workoutId: workout.id });
     }
   };
 
