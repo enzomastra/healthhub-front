@@ -7,7 +7,7 @@ const WorkoutCard = ({ workout, isCreateNew }) => {
 
   const handlePress = () => {
     if (isCreateNew) {
-      navigation.navigate('Workout');
+      navigation.navigate('CreateWorkout');
     } else {
       navigation.navigate('WorkoutDetails', { workoutId: workout.id });
     }

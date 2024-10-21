@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
 const API_URL_AUTH = "http://192.168.18.8:8000/auth";
-const API_URL_EXERCISES = "http://192.168.18.8:8000/exercise/search?query=";
+const API_URL_EXERCISES = "http://192.168.18.8:8000/exercise";
 const API_URL_WORKOUT = "http://192.168.18.8:8000/workout";
 
 export const handleLogin = async (form, setIsSubmitting, login, navigation) => {
@@ -72,7 +72,7 @@ export const fetchExercises = async (query = '') => {
       throw new Error('No token found');
     }
 
-    const response = await axios.get(`${API_URL_EXERCISES}${query}`, {
+    const response = await axios.get(`${API_URL_EXERCISES}/search?query=${query}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -169,13 +169,11 @@ export const fetchExerciseDetails = async (exerciseName) => {
       throw new Error('No token found');
     }
 
-    const response = await axios.get(`${API_URL_EXERCISES}${exerciseName}`, {
+    const response = await axios.get(`${API_URL_EXERCISES}/search?query=${exerciseName}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('url:', `${API_URL_EXERCISES}${exerciseName}`);
-
     if (!response.data || !Array.isArray(response.data)) {
       throw new Error('Invalid response data');
     }
@@ -188,24 +186,83 @@ export const fetchExerciseDetails = async (exerciseName) => {
   }
 };
 
-export const fetchWorkoutDetails = async (workoutId) => {
+export const removeExerciseFromWorkout = async (exerciseId) => {
   try {
     const token = await AsyncStorage.getItem('token');
-    console.log('Token:', token); // Añadir este log
     if (!token) {
       throw new Error('No token found');
     }
-    console.log('Making request to:', `${API_URL_WORKOUT}/${workoutId}`);
+
+    const response = await axios.delete(`${API_URL_EXERCISES}/${exerciseId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error removing exercise from workout:', error);
+    throw error;
+  }
+};
+
+export const deleteWorkout = async (workoutId) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await axios.delete(`${API_URL_WORKOUT}/${workoutId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting workout:', error);
+    throw error;
+  }
+};
+
+export const updateWorkout = async (workoutId, name, description) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await axios.put(`${API_URL_WORKOUT}/${workoutId}`, 
+      { name, description }, // Solo pasamos el nombre y la descripción
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error updating workout:', error);
+    throw error;
+  }
+};
+
+export const fetchWorkoutDetails = async (workoutId) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
     const response = await axios.get(`${API_URL_WORKOUT}/${workoutId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('Response data:', response.data);
-
     return response.data;
   } catch (error) {
-    console.error('Error fetching workout details:', error);
+    console.error('Error fetching Workout details:', error);
     throw error;
   }
 };

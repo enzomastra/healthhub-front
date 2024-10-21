@@ -6,6 +6,7 @@ import Workout from '../screens/workout';
 import CreateWorkout from '../screens/createWorkout';
 import SearchExercise from '../screens/searchExercise';
 import WorkoutDetails from '../screens/workoutDetails';
+import EditWorkout from '../screens/editWorkout';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ export default function AppNavigator() {
       <Stack.Screen name="CreateWorkout" component={CreateWorkout} />
       <Stack.Screen name="SearchExercise" component={SearchExercise} />
       <Stack.Screen name="WorkoutDetails" component={WorkoutDetails} />
+      <Stack.Screen name="EditWorkout" component={EditWorkout} />
 
     </Stack.Navigator>
   );

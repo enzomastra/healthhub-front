@@ -37,7 +37,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Welcome to Healthhub</Text>
+      <Text style={styles.sectionTitle}>Welcome to HealthHub</Text>
       <Text style={styles.sectionSubtitle}>Trending Exercises</Text>
 
 

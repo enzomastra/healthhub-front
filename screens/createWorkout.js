@@ -17,6 +17,12 @@ const CreateWorkout = () => {
     });
   };
 
+  const handleWorkout = () => {
+    navigation.navigate('WorkoutDetails', {
+      workoutId,
+    });
+  };
+
   const handleCreateWorkout = async () => {
     if (!workoutName || !description) {
       Alert.alert('Validation Error', 'Please enter both workout name and description.');
@@ -62,18 +68,7 @@ const CreateWorkout = () => {
         <Button title="Create Workout" onPress={handleCreateWorkout} />
       ) : (
         <>
-          <Button title="Add Exercise" onPress={handleAddExercise} />
-          <FlatList
-            data={exercises}
-            keyExtractor={(item) => `${item.name}-${item.muscle}`}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleExerciseClick(item.name)}>
-                <View style={styles.exerciseItem}>
-                  <Text>{item.name}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+          <Button title="Add Exercises" onPress={handleWorkout} />
         </>
       )}
     </View>

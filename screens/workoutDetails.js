@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { fetchWorkoutDetails, fetchExerciseDetails } from '../api';
 import { FlashList } from '@shopify/flash-list'; 
 import { useNavigation } from '@react-navigation/native';
@@ -28,7 +28,6 @@ const WorkoutDetails = ({ route }) => {
     try {
       const encodedExerciseName = encodeURIComponent(exercise.name);
       const exerciseDetails = await fetchExerciseDetails(encodedExerciseName);
-      // Navegar a la pantalla de detalles del ejercicio con los detalles como parámetro
       navigation.navigate('ExerciseDetails', { exercise: exerciseDetails });
     } catch (error) {
       console.error('Error fetching exercise details:', error);
@@ -36,7 +35,7 @@ const WorkoutDetails = ({ route }) => {
   };
 
   useEffect(() => {
-    loadWorkoutDetails(); // Cargar los detalles del workout cuando se monta el componente
+    loadWorkoutDetails();
   }, [workoutId]);
 
   if (loading) {
@@ -50,6 +49,7 @@ const WorkoutDetails = ({ route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.workoutTitle}>{workout.name}</Text>
+      <Button title="Edit Workout" onPress={() => navigation.navigate('EditWorkout', { workout })} />
       <Text style={styles.workoutDescription}>{workout.description}</Text>
 
       <FlashList
@@ -58,7 +58,7 @@ const WorkoutDetails = ({ route }) => {
         renderItem={({ item }) => (
           <ExerciseCard
             exercise={item}
-            onPress={() => handleExerciseClick(item)}  // Llamada a la función cuando se presiona la tarjeta
+            onPress={() => handleExerciseClick(item)}
           />
         )}
         estimatedItemSize={100}
