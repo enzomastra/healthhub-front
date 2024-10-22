@@ -95,6 +95,7 @@ const EditWorkout = () => {
             <Button title="Remove" onPress={() => handleRemoveExercise(item.id)} />
           </View>
         )}
+        estimatedItemSize={150}
       />
       <Button title="Add Exercise" onPress={handleAddExercise} />
       <Button title="Delete Workout" onPress={handleDeleteWorkout} color="red" />
