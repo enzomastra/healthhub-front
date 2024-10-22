@@ -52,6 +52,7 @@ const CreateWorkout = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Create Workout</Text>
       <Text style={styles.label}>Workout Name</Text>
       <TextInput
         style={styles.input}
@@ -78,9 +79,18 @@ const CreateWorkout = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 50,
     padding: 20,
+    backgroundColor: '#271F30',
+  },
+  title: {
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
   label: {
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,

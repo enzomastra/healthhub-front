@@ -74,18 +74,22 @@ const EditWorkout = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Edit Workout</Text>
+      <Text style={styles.label}>Workout Name</Text>
       <TextInput
         style={styles.input}
         value={name}
         onChangeText={setName}
         placeholder="Workout Name"
       />
+      <Text style={styles.label}>Description</Text>
       <TextInput
         style={styles.input}
         value={description}
         onChangeText={setDescription}
         placeholder="Workout Description"
       />
+      <Text style={styles.label}>Exercises</Text>
       <FlashList
         data={exercises}
         keyExtractor={(item) => item.id.toString()}
@@ -98,8 +102,8 @@ const EditWorkout = () => {
         estimatedItemSize={150}
       />
       <Button title="Add Exercise" onPress={handleAddExercise} />
-      <Button title="Delete Workout" onPress={handleDeleteWorkout} color="red" />
-      <Button title="Done" onPress={handleSave} color="green"/>
+      <Button title="Delete Workout" onPress={handleDeleteWorkout} color='red' />
+      <Button title="Done" onPress={handleSave} color='green'/>
     </View>
   );
 };
@@ -108,10 +112,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingTop: 40,
+    backgroundColor: '#271F30',
+  },
+  title: {
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 10,
   },
   input: {
     height: 40,
     borderColor: 'gray',
+    backgroundColor: '#fff',
     borderWidth: 1,
     marginBottom: 10,
     padding: 8,
