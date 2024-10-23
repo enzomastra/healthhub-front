@@ -11,12 +11,12 @@ const Tab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName="HomeTab"
+      initialRouteName="HomeTab" // Cambiar a HomeTab
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused }) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'HomeTab') { // Cambiar a HomeTab
             iconName = focused ? icons.home : icons.home;
           } else if (route.name === 'Profile') {
             iconName = focused ? icons.profile : icons.profile;
@@ -37,7 +37,7 @@ export default function BottomTabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="HomeTab" component={Home} />
       <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="Routines" component={Routines} />
     </Tab.Navigator>

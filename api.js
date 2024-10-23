@@ -1,11 +1,7 @@
+import { API_URL_AUTH, API_URL_EXERCISES, API_URL_WORKOUT, API_URL_CLIENT } from '@env';
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
-
-const API_URL_AUTH = "http://192.168.18.8:8000/auth";
-const API_URL_EXERCISES = "http://192.168.18.8:8000/exercise";
-const API_URL_WORKOUT = "http://192.168.18.8:8000/workout";
-const API_URL_CLIENT = "http://192.168.18.8:8000/client";
 
 export const handleLogin = async (form, setIsSubmitting, login, navigation) => {
   setIsSubmitting(true);

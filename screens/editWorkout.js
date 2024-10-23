@@ -50,12 +50,12 @@ const EditWorkout = () => {
       try {
         await updateWorkout(workout.id, name, description);
         Alert.alert('Workout updated successfully');
-        navigation.navigate('Workout');
+        navigation.navigate('HomeTab', { screen: 'Workout' });
       } catch (error) {
         console.error('Error updating workout:', error);
       }
     } else {
-      navigation.navigate('Workout');
+      navigation.navigate('HomeTab', { screen: 'Workout' });
     }
   };
 
