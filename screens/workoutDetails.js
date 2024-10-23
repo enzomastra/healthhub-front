@@ -4,6 +4,7 @@ import { fetchWorkoutDetails, fetchExerciseDetails } from '../api';
 import { FlashList } from '@shopify/flash-list'; 
 import { useNavigation } from '@react-navigation/native';
 import ExerciseCard from '../components/ExerciseCard'; 
+import BackButton from '../components/BackButton';
 
 const WorkoutDetails = ({ route }) => {
   const navigation = useNavigation();
@@ -48,6 +49,7 @@ const WorkoutDetails = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <BackButton />
       <Text style={styles.workoutTitle}>{workout.name}</Text>
       <Button title="Edit Workout" onPress={() => navigation.navigate('EditWorkout', { workout })} />
       <Text style={styles.workoutDescription}>{workout.description}</Text>
@@ -70,6 +72,7 @@ const WorkoutDetails = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    paddingTop: 90,
     backgroundColor: '#271F30',
     flex: 1,
   },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, FlatList, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { fetchExercises, addExerciseToWorkout as apiAddExerciseToWorkout } from '../api'; // Renombramos la función importada
 import { useNavigation, useRoute } from '@react-navigation/native';
+import BackButton from '../components/BackButton';
 
 const SearchExercise = () => {
   const [query, setQuery] = useState('');
@@ -19,12 +20,10 @@ const SearchExercise = () => {
     }
   };
 
-  // Renombramos la función local para evitar el conflicto
   const handleAddExerciseToWorkout = async (workoutId, exerciseName) => {
     try {
-      await apiAddExerciseToWorkout(workoutId, exerciseName); // Usamos la función renombrada
+      await apiAddExerciseToWorkout(workoutId, exerciseName);
       Alert.alert('Success', `${exerciseName} has been added to your workout.`);
-      // Navegar de regreso a la pantalla de edición del workout
       navigation.goBack();
     } catch (error) {
       console.error('Error adding exercise to workout:', error);
@@ -41,7 +40,7 @@ const SearchExercise = () => {
 
   const handleSelectExercise = (exercise) => {
     if (workoutId) {
-      handleAddExerciseToWorkout(workoutId, exercise.name); // Llamamos a la función correctamente
+      handleAddExerciseToWorkout(workoutId, exercise.name);
     } else {
       console.error('Workout ID is null');
     }
@@ -49,6 +48,7 @@ const SearchExercise = () => {
 
   return (
     <View style={styles.container}>
+      <BackButton />
       <TextInput
         style={styles.input}
         placeholder="Search exercises"
@@ -73,10 +73,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingTop: 90,
+    backgroundColor: '#271F30',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
+    backgroundColor: '#fff',
     borderRadius: 8,
     padding: 10,
     marginBottom: 16,
@@ -85,6 +88,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    color: '#fff',
   },
 });
 

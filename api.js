@@ -295,11 +295,6 @@ export const updateClient = async (userId, data) => {
       throw new Error('No token found');
     }
 
-    console.log('Updating client:', data);
-    console.log('Token:', token);
-    console.log('User ID:', userId);
-    console.log('API URL:', `${API_URL_CLIENT}/${userId}`);
-
     const response = await axios.put(`${API_URL_CLIENT}/${userId}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,

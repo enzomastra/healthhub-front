@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, View, StyleSheet, Text, TextInput, Alert } from 'react-native';
 import { useAuth } from '../hooks/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { fetchClientByEmail, updateClient } from '../api'; // Importa la función para obtener y actualizar datos
+import { fetchClientByEmail, updateClient } from '../api';
 
-// Función manual para decodificar el JWT sin librerías adicionales
+
 const parseJwt = (token) => {
   try {
     const base64Url = token.split('.')[1];
@@ -29,15 +29,14 @@ const Profile = () => {
   const [userData, setUserData] = useState({ name: '', weight: '', height: '' });
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [userId, setUserId] = useState(null); // Estado para almacenar el ID del cliente
+  const [userId, setUserId] = useState(null);
 
-  // Función para obtener el email del usuario desde el JWT
   const getUserEmail = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
       if (token) {
-        const decodedToken = parseJwt(token); // Usamos la función manual para decodificar
-        return decodedToken?.sub; // El campo sub contiene el email
+        const decodedToken = parseJwt(token);
+        return decodedToken?.sub;
       }
     } catch (error) {
       console.log("Error: ", error);
@@ -45,16 +44,15 @@ const Profile = () => {
     return null;
   };
 
-  // Hook para cargar los datos del usuario cuando el componente se monta
   useEffect(() => {
     const fetchUserData = async () => {
       setLoading(true);
-      const email = await getUserEmail(); // Obtiene el email del usuario
+      const email = await getUserEmail();
       if (email) {
         try {
-          const clientData = await fetchClientByEmail(email); // Llama al backend para obtener los datos del cliente
+          const clientData = await fetchClientByEmail(email);
           if (clientData) {
-            setUserId(clientData.id); // Guarda el ID del cliente en el estado
+            setUserId(clientData.id);
             setUserData({
               name: clientData.name,
               weight: clientData.weight,
@@ -70,13 +68,12 @@ const Profile = () => {
       setLoading(false);
     };
 
-    fetchUserData(); // Ejecuta la función al montar el componente
-  }, []); // Este efecto se ejecuta solo una vez, cuando se monta el componente
+    fetchUserData();
+  }, []);
 
   const handleLogout = async () => {
     try {
       await logout();
-      console.log('Logout successful');
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -84,8 +81,8 @@ const Profile = () => {
 
   const handleSave = async () => {
     try {
-      if (userId) { // Usa el ID del cliente para actualizar los datos
-        await updateClient(userId, userData); // Usa el ID para la actualización, no el email
+      if (userId) {
+        await updateClient(userId, userData);
         Alert.alert('Profile updated successfully');
         setIsEditing(false);
       }
@@ -96,7 +93,7 @@ const Profile = () => {
   };
 
   if (loading) {
-    return <Text>Loading...</Text>; // Muestra un loading mientras se cargan los datos
+    return <Text>Loading...</Text>;
   }
 
   return (

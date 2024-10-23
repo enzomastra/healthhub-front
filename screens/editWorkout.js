@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import ExerciseCard from '../components/ExerciseCard';
 import { updateWorkout, removeExerciseFromWorkout, deleteWorkout, fetchWorkoutDetails } from '../api';
+import BackButton from '../components/BackButton';
 
 const EditWorkout = () => {
   const route = useRoute();
@@ -13,7 +14,6 @@ const EditWorkout = () => {
   const [description, setDescription] = useState(workout.description);
   const navigation = useNavigation();
 
-  // Función para refrescar los datos del workout desde la API
   const refreshWorkoutDetails = async () => {
     try {
       const updatedWorkout = await fetchWorkoutDetails(workout.id);
@@ -25,10 +25,9 @@ const EditWorkout = () => {
     }
   };
 
-  // Usamos useFocusEffect para refrescar los detalles cuando la pantalla es enfocada
   useFocusEffect(
     useCallback(() => {
-      refreshWorkoutDetails(); // Refresca los datos cuando la pantalla vuelve a estar enfocada
+      refreshWorkoutDetails(); 
     }, [workout.id])
   );
 
@@ -40,24 +39,22 @@ const EditWorkout = () => {
     try {
       await removeExerciseFromWorkout(exerciseId);
       setExercises(exercises.filter(exercise => exercise.id !== exerciseId));
-      refreshWorkoutDetails(); // Refresca después de remover el ejercicio
+      refreshWorkoutDetails();
     } catch (error) {
       console.error('Error removing exercise:', error);
     }
   };
 
   const handleSave = async () => {
-    // Si hay algún cambio en el nombre o la descripción
     if (name !== workout.name || description !== workout.description) {
       try {
-        await updateWorkout(workout.id, name, description); // Pasamos solo el id, nombre y descripción
+        await updateWorkout(workout.id, name, description);
         Alert.alert('Workout updated successfully');
-        navigation.navigate('Workout'); // Navegamos a la lista de rutinas
+        navigation.navigate('Workout');
       } catch (error) {
         console.error('Error updating workout:', error);
       }
     } else {
-      // Si no hay cambios, simplemente navega de vuelta a la lista de rutinas
       navigation.navigate('Workout');
     }
   };
@@ -74,6 +71,7 @@ const EditWorkout = () => {
 
   return (
     <View style={styles.container}>
+      <BackButton />
       <Text style={styles.title}>Edit Workout</Text>
       <Text style={styles.label}>Workout Name</Text>
       <TextInput
@@ -112,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingTop: 40,
+    paddingTop: 90,
     backgroundColor: '#271F30',
   },
   title: {
