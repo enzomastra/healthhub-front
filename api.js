@@ -5,6 +5,7 @@ import { Alert } from "react-native";
 const API_URL_AUTH = "http://192.168.18.8:8000/auth";
 const API_URL_EXERCISES = "http://192.168.18.8:8000/exercise";
 const API_URL_WORKOUT = "http://192.168.18.8:8000/workout";
+const API_URL_CLIENT = "http://192.168.18.8:8000/client";
 
 export const handleLogin = async (form, setIsSubmitting, login, navigation) => {
   setIsSubmitting(true);
@@ -263,6 +264,51 @@ export const fetchWorkoutDetails = async (workoutId) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching Workout details:', error);
+    throw error;
+  }
+};
+
+export const fetchClientByEmail = async (email) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const response = await axios.get(`${API_URL_CLIENT}/email/${email}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching client details:', error);
+    throw error;
+  }
+};
+
+export const updateClient = async (userId, data) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    console.log('Updating client:', data);
+    console.log('Token:', token);
+    console.log('User ID:', userId);
+    console.log('API URL:', `${API_URL_CLIENT}/${userId}`);
+
+    const response = await axios.put(`${API_URL_CLIENT}/${userId}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error updating client:', error);
     throw error;
   }
 };
